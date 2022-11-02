@@ -11,32 +11,34 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Interactions;
 using NUnit.Framework;
-[TestFixture]
-public class MeWeTest
-{
-    private IWebDriver driver;
-    public IDictionary<string, object> vars { get; private set; }
-    private IJavaScriptExecutor js;
-    [SetUp]
-    public void SetUp()
+
+namespace MeWeTest{
+    [TestFixture]
+    public class UnitTest1 : TestBase
     {
-        driver = new ChromeDriver();
-        js = (IJavaScriptExecutor)driver;
-        vars = new Dictionary<string, object>();
-    }
-    [TearDown]
-    protected void TearDown()
-    {
-        driver.Quit();
-    }
-    [Test]
-    public void mewe()
-    {
-        driver.Navigate().GoToUrl("https://mewe.com/login");
-        driver.Manage().Window.Size = new System.Drawing.Size(1097, 662);
-        driver.FindElement(By.Id("email")).SendKeys("fatikoff2002@mail.ru");
-        driver.FindElement(By.Id("password")).Click();
-        driver.FindElement(By.Id("password")).SendKeys("DaniilFatykov");
-        driver.FindElement(By.CssSelector(".form")).Click();
+        
+        [Test]
+        public void login()
+        {
+            AccountData user = new AccountData("fatikoff2002@mail.ru", "DaniilFatykov");
+            OpenLoginPage();
+            MangeWindow();
+            Login(user);
+        }
+
+        [Test]
+        public void post()
+        {
+            AccountData user = new AccountData("fatikoff2002@mail.ru", "DaniilFatykov");
+            GroupData post = new GroupData("Hello world") { Header = "sds", Footer = "dsfsd" }; ;
+            OpenLoginPage();
+            MangeWindow();
+            Login(user);
+            Thread.Sleep(50000);
+            OpenProfilePage();
+            Thread.Sleep(5000);
+            NewPost(post);
+        }
     }
 }
+
