@@ -14,16 +14,15 @@ using NUnit.Framework;
 
 namespace MeWeTest{
     [TestFixture]
-    public class UnitTest1 : TestBase
+    public class AutoTest_One : TestBase
     {
-        
+
         [Test]
         public void login()
         {
             AccountData user = new AccountData("fatikoff2002@mail.ru", "DaniilFatykov");
-            OpenLoginPage();
-            MangeWindow();
-            Login(user);
+            app.Navigation.OpenLoginPage();
+            app.Auth.Login(user);
         }
 
         [Test]
@@ -31,13 +30,14 @@ namespace MeWeTest{
         {
             AccountData user = new AccountData("fatikoff2002@mail.ru", "DaniilFatykov");
             GroupData post = new GroupData("Hello world") { Header = "sds", Footer = "dsfsd" }; ;
-            OpenLoginPage();
-            MangeWindow();
-            Login(user);
-            Thread.Sleep(50000);
-            OpenProfilePage();
+            app.Navigation.OpenLoginPage();
+            app.Auth.Login(user);
+            Thread.Sleep(20000);
+            app.Navigation.OpenNavigationMenu();
             Thread.Sleep(5000);
-            NewPost(post);
+            app.Navigation.OpenProfilePage();
+            Thread.Sleep(5000);
+            app.Group.NewPost(post);
         }
     }
 }
